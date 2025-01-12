@@ -54,16 +54,21 @@
         <div class="card-box">
             <ul class="nav nav-pills navtab-bg nav-justified">
                 <li class="nav-item">
-                    <a href="#aboutme" data-toggle="tab" aria-expanded="true" class="nav-link active">
+                    <a href="#aboutme" data-toggle="tab" aria-expanded="true" class="nav-link {{ session('active_tab', 'aboutme') == 'aboutme' ? 'active' : '' }}">
                         البيانات الشخصيه
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="#settings" data-toggle="tab" aria-expanded="false" class="nav-link {{ session('active_tab') == 'settings' ? 'active' : '' }}">
+                        مواعيد العمل
+                    </a>
+                </li> 
             </ul>
             <form method="POST" action="{{ route('employeesUpdate', ['admin', 'employees', 'update']) }}" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="id" value="{{$employee->id}}">
                 <div class="tab-content">
-                    <div class="tab-pane show active" id="aboutme">
+                    <div class="tab-pane fade {{ session('active_tab', 'aboutme') == 'aboutme' ? 'show active' : '' }}" id="aboutme">
                         <br><br>
                         <div class="col-xl-12 col-md-12">
                             <div class="card user-card-full">
@@ -200,26 +205,67 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <button class="btn btn-danger btn-rounded waves-effect waves-light" type="submit"
+                                    style="float: left;width: 15%;">
+                                    حفظ
+                                </button>
+                                <br><br>
+                            </div>
                         </div>
 
                     </div> <!-- end tab-pane -->
-                    <!-- end about me section content -->
+                    
+                </form>
+                    <div class="tab-pane fade {{ session('active_tab') == 'settings' ? 'show active' : '' }}" id="settings">
+                        <div class="col-xl-12 col-md-12">
+                            <div class="card user-card-full">
+                                <div class="row m-l-0 m-r-0">
+                                    <div class="col-sm-12">
+                                        <div class="card-block">
 
-                  
-                    <!-- end timeline content-->
 
-                   
-                    <!-- end settings content-->
+                                           
+
+                                           
+                                            <p class="m-b-10 f-w-600"> مواعيد العمل <span style="color: red">( {{ $employee->first_name}} {{ $employee->last_name}} )</span> </p><br>
+                                             <!-- إضافة موظف -->
+                                            <form action="{{ route('update-attendance-person', $employee->id) }}" method="POST" class="mt-3" id="assign-person-form">
+                                                @csrf
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <p class="m-b-10 f-w-600">وقت الحضور</p>
+                                                        <input class="form-control {{ $errors->has('check_in') ? 'is-invalid' : '' }}" type="time" name="check_in" value="{{ $employee->check_in }}" required>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <p class="m-b-10 f-w-600">وقت الانصراف</p>
+                                                        <input class="form-control {{ $errors->has('check_out') ? 'is-invalid' : '' }}" type="time" name="check_out" value="{{ $employee->check_out }}" required>
+
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <p class="m-b-10 f-w-600">&nbsp;&nbsp;</p>
+                                                        <button type="submit" id="assign-person-btn"  class="btn btn-primary">حفظ</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+
+                                          
+                                           
+                                            
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
 
                 </div> <!-- end tab-content -->
-                <div class="form-group">
-                    <button class="btn btn-danger btn-rounded waves-effect waves-light" type="submit"
-                        style="float: left;width: 15%;">
-                        حفظ
-                    </button>
-                    <br><br>
-                </div>
-            </form>
+               
+
+
         </div> <!-- end card-box-->
 
     </div> <!-- end col -->
@@ -241,4 +287,17 @@
 <!-- Page js-->
 <script src="{{ asset('assets/js/pages/form-fileuploads.init.js') }}"></script>
 <script src="{{ asset('assets/js/pages/add-product.init.js') }}"></script>
+
+
+<script> 
+    document.addEventListener('DOMContentLoaded', function () {
+    
+        const activeTab = '{{ session('active_tab', 'aboutme') }}';
+            document.querySelector(`a[href="#${activeTab}"]`).click();
+    });
+    
+        
+    </script>
+
+
 @endsection

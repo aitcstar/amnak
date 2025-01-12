@@ -75,6 +75,15 @@
                         <span> المشاريع </span>
                     </a>
                 </li>
+
+                <li>
+                    <a href="{{route('personleavesIndex',['admin','personleaves' ,'index']) }}">
+                        <i class="fa fa-leaf" aria-hidden="true"></i>
+                        <span> الطلبات </span>
+                    </a>
+                </li>
+
+                
                 <li>
                     <!--<a href="{{route('usersIndex',['admin','users' ,'index']) }}">-->
                         <a href="#">
@@ -83,7 +92,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{route('accounttypeIndex',['admin','accounttype' ,'index']) }}">
+                    <a href="{{route('rolesIndex',['admin','roles' ,'index']) }}">
                         <i class="fa fa-tasks"></i>
                         <span>أدوار</span>
                     </a>
@@ -114,6 +123,12 @@
                     <a href="{{route('projectsIndex',['admin','projects' ,'index']) }}">
                         <i class="fas fa-project-diagram"></i>
                         <span> المشاريع </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('personleavesIndex',['admin','personleaves' ,'index']) }}">
+                        <i class="fa fa-leaf" aria-hidden="true"></i>
+                        <span> الطلبات </span>
                     </a>
                 </li>
                 <li>

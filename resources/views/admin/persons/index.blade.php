@@ -31,12 +31,10 @@
 </div>
 @endif
 
-@if (Auth::user()->role_id == 0)
 <div class="button-list">
     <a class="btn btn-success btn-rounded waves-effect waves-light" href="{{route('personsCreate',['admin','persons' ,'create']) }}">
         اضف أفراد </a>
 </div><br>
-@endif
 
 <div class="card">
     <div class="card-body">

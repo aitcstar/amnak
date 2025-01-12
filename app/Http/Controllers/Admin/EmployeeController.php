@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Person;
 use App\Models\PersonImage;
+use App\Models\Project;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Str;
@@ -17,8 +18,24 @@ class EmployeeController extends Controller
 {
     public function index(Request $request)
     {
-        $employees = Person::whereNotNull('company_id')->orderBy('id', 'DESC')->get();
-        return view('admin.employees.index', compact('employees'));
+        /*$employees = Person::whereNotNull('company_id')->orderBy('id', 'DESC')->get();
+        return view('admin.employees.index', compact('employees'));*/
+
+        // الحصول على جميع المشاريع لعرضها في القائمة المنسدلة
+        $projects = Project::all();
+
+        // البحث عن الموظفين بناءً على المشروع المحدد
+        $query = Person::query();
+
+        if ($request->has('project_id') && $request->project_id) {
+            $query->whereHas('projects', function ($q) use ($request) {
+                $q->where('projects.id', $request->project_id);
+            });
+        }
+
+        $employees = $query->get();
+
+        return view('admin.employees.index', compact('employees', 'projects'));
     }
 
     public function create()
@@ -91,7 +108,7 @@ class EmployeeController extends Controller
     {
         $employee=Person::findOrFail($request->id);
 
-        return view('admin.employees.edit', compact('employee'));
+        return view('admin.employees.edit', compact('employee'))->with('active_tab', 'aboutme');
     }
 
     public function update(request $request)
@@ -131,9 +148,9 @@ class EmployeeController extends Controller
    
 
     if(Auth::user()->role_id == 1){
-        return redirect()->route('employeesIndex',['admin','employees' ,'index']);
+        return redirect()->route('employeesIndex',['admin','employees' ,'index'])->with('active_tab', 'aboutme');
     }else{
-        return redirect()->route('employeesIndex',['admin','employees' ,'index']);
+        return redirect()->route('employeesIndex',['admin','employees' ,'index'])->with('active_tab', 'aboutme');
 
         //return redirect()->route('employeesEdit',['admin','employees' ,'edit',Auth::user()->id]);
     }
@@ -149,4 +166,21 @@ class EmployeeController extends Controller
         
         return back();
     }
+
+
+    public function attendancePerson(Request $request, $employeeId)
+    {
+        $formInput=$request->all();
+
+        $request->validate([
+            'check_in' => 'required',
+            'check_out' => 'required',
+        ]);
+
+        Person::where('id',$employeeId)->update($formInput);
+
+        return redirect()->back()->with('message', 'تم إضافة مواعيد العمل بنجاح')->with('active_tab', 'settings');
+    }
+
+    
 }

@@ -8,6 +8,7 @@ use Illuminate\Support\Carbon;
 use App\Models\AccountType;
 use App\Models\User;
 use App\Models\Person;
+use App\Models\Project;
 
 use Hash;
 class HomeController extends Controller
@@ -30,8 +31,17 @@ class HomeController extends Controller
     public function index()
     {
             if(Auth::user()->id != 1){
-                $employees = Person::where('role_id',0)->orderBy('id', 'DESC')->get();
-                return view('admin.employees.index', compact('employees'));
+                /*$employees = Person::where('role_id',0)->orderBy('id', 'DESC')->get();
+                return view('admin.employees.index', compact('employees'));*/
+                $projects = Project::all();
+
+                // البحث عن الموظفين بناءً على المشروع المحدد
+                $query = Person::query();
+        
+               
+                $employees = $query->get();
+        
+                return view('admin.employees.index', compact('employees', 'projects'));
             }else{
                 $AccountTypes = AccountType::orderBy('id', 'ASC')->get();
                 return view('admin.accounttype.index', compact('AccountTypes'));

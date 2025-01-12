@@ -61,7 +61,7 @@
                 @foreach($projects as $project)
                 <tr>
                     <td>
-                        <a  href="{{route('projectsShow',['admin','projects' ,'show',$project->id] )}}">
+                        <a  href="{{route('projectsEdit',['admin','projects' ,'edit',$project->id] )}}">
                             <b>{{$project->name}}</b>
                         </a>
                     </td>
@@ -78,9 +78,11 @@
                     </td>
                     
                     <td>
+                        <!--
                        <a class="action-icon" href="{{route('projectsShow',['admin','projects' ,'show',$project->id] )}}">
                             <i class="mdi mdi-eye"></i>
-                        </a>
+                        </a>-->
+                        
                         <a class="action-icon" href="{{ route('projectsEdit', ['admin', 'projects', 'edit', $project->id]) }}">
                             <i class="mdi mdi-square-edit-outline"></i>
                         </a>

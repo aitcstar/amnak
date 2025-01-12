@@ -4,7 +4,30 @@
 <!-- Plugins css -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+<link href="{{ asset('assets/libs/select2/select2.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('assets/libs/summernote/summernote.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('assets/libs/dropzone/dropzone.min.css') }}" rel="stylesheet" type="text/css" />
 
+<style>
+    .btn-file {
+        position: relative;
+        overflow: hidden;
+    }
+    .btn-file input[type=file] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 100px;
+        text-align: right;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        outline: none;   
+        cursor: inherit;
+        display: block;
+    }
+</style>
 @endsection
 
 @section('content')
@@ -36,6 +59,34 @@
         اضف موظف </a>
 </div><br>
 @endif
+
+<div class="col-sm-12">
+    <div class="card" style="padding: 13px 16px;">
+        <div class="card-block">
+            <form method="GET" action="{{route('employeesIndex',['admin','employees' ,'index']) }}">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="project_id">البحث بالمشروع</label>
+                        <select name="project_id" id="project_id" class="form-control select2">
+                            <option value="">اختر مشروعًا</option>
+                            @foreach ($projects as $project)
+                                <option value="{{ $project->id }}" 
+                                    {{ request('project_id') == $project->id ? 'selected' : '' }}>
+                                    {{ $project->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <button type="submit" class="btn btn-primary mt-4">بحث</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 <div class="card">
     <div class="card-body">
         <table id="datatable-buttons" class="table table-striped dt-responsive nowrap w-100">
@@ -152,7 +203,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+<script src="{{ asset('assets/libs/select2/select2.min.js') }}"></script>
+<script src="{{ asset('assets/libs/summernote/summernote.min.js') }}"></script>
 
+<script src="{{ asset('assets/libs/dropzone/dropzone.min.js') }}"></script>
+
+<!-- Page js-->
+<script src="{{ asset('assets/js/pages/form-fileuploads.init.js') }}"></script>
+<script src="{{ asset('assets/js/pages/add-product.init.js') }}"></script>
 
 
 <script>

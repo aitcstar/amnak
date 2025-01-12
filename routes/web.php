@@ -14,6 +14,10 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\PersonController;
 use App\Http\Controllers\Admin\ProjectController;
+use App\Http\Controllers\Admin\PersonLeaveController;
+use App\Http\Controllers\Admin\RoleController;
+
+
 
 
 
@@ -88,7 +92,10 @@ Route::group(['prefix'=>'dashboard','middleware'=>['auth','is_admin']],function 
    Route::get('{first}/{second}/{third}/employees/edit/{id}', [EmployeeController::class, 'edit'])->name('employeesEdit');
    Route::POST('{first}/{second}/{third}/employees/update', [EmployeeController::class, 'update'])->name('employeesUpdate');
    Route::get('{first}/{second}/{third}/employees/destroy/{id}', [EmployeeController::class, 'destroy'])->name('employeesDestroy');
+   Route::post('/employees/{employeeId}/update-attendance-person', [EmployeeController::class, 'attendancePerson'])->name('update-attendance-person');
+   Route::get('/projects/search', [EmployeeController::class, 'search'])->name('projectssearch');
 
+   
     //////////////////  persons ///////////////////
     Route::get('{first}/{second}/{third}/persons', [PersonController::class, 'index'])->name('personsIndex');
     Route::get('{first}/{second}/{third}/persons/create', [PersonController::class, 'create'])->name('personsCreate');
@@ -111,7 +118,22 @@ Route::group(['prefix'=>'dashboard','middleware'=>['auth','is_admin']],function 
      Route::delete('/projects/{projectId}/remove-person/{personId}', [ProjectController::class, 'removePerson'])->name('remove-person');
  
     
+    //////////////////  personleaves ///////////////////
+    Route::get('{first}/{second}/{third}/personleaves', [PersonLeaveController::class, 'index'])->name('personleavesIndex');
+    Route::get('{first}/{second}/{third}/personleaves/create', [PersonLeaveController::class, 'create'])->name('personleavesCreate');
+    Route::post('{first}/{second}/{third}/personleaves/store', [PersonLeaveController::class, 'store'])->name('personleavesStore');
+    Route::get('{first}/{second}/{third}/personleaves/show/{id}', [PersonLeaveController::class, 'show'])->name('personleavesShow');
+    Route::patch('/person_leaves/{id}/updateStatus', [PersonLeaveController::class, 'updateStatus'])->name('person_leaves.updateStatus');
 
+    //////////////////  personleaves ///////////////////
+    Route::get('{first}/{second}/{third}/roles', [RoleController::class, 'index'])->name('rolesIndex');
+    Route::get('{first}/{second}/{third}/roles/create', [RoleController::class, 'create'])->name('rolesCreate');
+    Route::post('{first}/{second}/{third}/roles/store', [RoleController::class, 'store'])->name('rolesStore');
+    Route::get('{first}/{second}/{third}/roles/edit/{id}', [RoleController::class, 'edit'])->name('rolesEdit');
+    Route::POST('{first}/{second}/{third}/roles/update', [RoleController::class, 'update'])->name('rolesUpdate');
+
+    
+     
    ////////////////// settings ///////////////////
    Route::get('{first}/{second}/{third}/settings', [SettingController::class, 'index'])->name('settingsIndex');
    Route::get('{first}/{second}/{third}/settings/create', [SettingController::class, 'create'])->name('settingsCreate');

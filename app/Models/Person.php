@@ -26,7 +26,9 @@ class Person extends Authenticatable
         'salary',
         'company_id',
         'job_number',
-        'gender'
+        'gender',
+        'check_in',
+        'check_out'
     ];
 
     // Relationship with the Company model
@@ -39,4 +41,12 @@ class Person extends Authenticatable
     {
         return $this->hasMany(PersonImage::class, 'person_id', 'id'); // تأكد من العمود الصحيح
     }
+
+    public function projects()
+    {
+        return $this->belongsToMany(Project::class, 'project_persons')
+                    ->withPivot('role')
+                    ->withTimestamps();
+    }
+
 }
